@@ -8,7 +8,7 @@ User_routes.post('/users', async (req, res) => {
     try {
         const newUser = new User_Profile(req.body);
         await newUser.save();
-        res.status(201).json(newUser);
+        res.status(200).json({userId : newUser._id});
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -17,7 +17,7 @@ User_routes.post('/users', async (req, res) => {
 User_routes.get('/users' , async (req , res) => {
     try{
         const user_list = await User_Profile.find()
-        res.status(201).json(user_list)
+        res.status(200).json(user_list)
     }catch(err){
         res.status(400).json({ error: err.message });
     }
@@ -33,7 +33,7 @@ User_routes.put('/users/:id' , async (req , res) => {
         if(!updatedUser){
             res.status(401).json({'error' : 'User not found'})
         }
-        res.status(201).json(updatedUser)
+        res.status(200).json(updatedUser)
     }catch(err){
         res.status(400).json({ error: err.message });
     }
@@ -46,7 +46,7 @@ User_routes.delete('/users/:id' , async (req , res) => {
         if(!deletedUser){
             res.status(401).json({'error' : 'User not found'})
         }
-        res.status(201).json({"msg" : "user deleted Successfully"})
+        res.status(200).json({"msg" : "user deleted Successfully"})
     }catch(err){
         res.status(400).json({ error: err.message });
     }
