@@ -72,7 +72,7 @@ Transaction_routes.put('/transaction/:id', async (req, res) => {
                 User.balance = User.balance - amount;
             }
             else {
-                return res.status(400).json({ error: 'Not enough Balance' });
+                return res.status(401).json({ error: 'Not enough Balance' });
             }
         }
         else {
@@ -86,7 +86,7 @@ Transaction_routes.put('/transaction/:id', async (req, res) => {
             { new: true, runValidators: true }
         );
 
-        res.status(201).json({ message: 'Transaction updation successful', updatedTransaction });
+        res.status(200).json({ message: 'Transaction updation successful', updatedTransaction });
     } catch (err) {
         res.status(500).json({ error: 'Error updating transaction' });
     }
@@ -109,8 +109,6 @@ Transaction_routes.get('/transaction/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;
 
-        console.log(userId)
-
         const transactionList = await Transaction.find({ user: userId });
 
         if (!transactionList || transactionList.length === 0) {
@@ -128,7 +126,7 @@ Transaction_routes.get('/transaction/tid/:id', async (req, res) => {
     try {
         const id = req.params.id;
 
-        console.log(id)
+        console.log("TID : " , id)
         
         const transaction = await Transaction.findById(id)
 

@@ -39,6 +39,41 @@ User_routes.put('/users/:id' , async (req , res) => {
     }
 })
 
+User_routes.get('/users/uid/:id' , async(req , res) => {
+    try{
+        const id = req.params.id
+        const user = await User_Profile.findById(id)
+        if(!user){
+            res.status(401).json({'error' : 'User not found'})
+        }
+        res.status(200).json(user)
+    }catch(err){
+        res.status(400).json({ error: err.message });
+    }
+})
+
+User_routes.post('/users/login' , async(req , res) => {
+    try{
+        const user = await User_Profile.findOne({email : req.body.email})
+        if(!user){
+            res.status(401).json({'error' : 'Invalid email or password'})
+        }
+        var isValidPassword = false
+        if(user.password == req.body.password){
+
+            isValidPassword = true
+        }
+        if(!isValidPassword){
+            res.status(401).json({'error' : 'Invalid email or password'})
+        }
+
+        res.status(200).json(user)
+
+    }catch(err){
+        res.status(400).json({ error: err.message });
+    }
+})
+
 
 User_routes.delete('/users/:id' , async (req , res) => {
     try{
